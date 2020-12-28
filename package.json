@@ -1,0 +1,13 @@
+{
+  "name": "@binarcode/restifyjs",
+  "version": "0.0.1",
+  "devDependencies": {
+    "esm": "^3.2.25",
+    "mocha": "^8.2.1"
+  },
+  "scripts": {
+    "test": "mocha -r esm --exit",
+    "test:watch": "mocha -r esm --watch"
+  },
+  "dependencies": {}
+}

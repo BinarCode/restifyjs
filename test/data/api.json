@@ -1,0 +1,31 @@
+{
+  "config": {
+    "base": "api/restify"
+  },
+  "repositories": [
+    {
+      "uriKey": "users",
+      "name": "Users",
+      "related": [
+        {
+          "relation": "posts",
+          "field": {
+            "attribute": "posts"
+          }
+        }
+      ],
+      "sort": [
+        "id"
+      ],
+      "match": [
+        {
+          "type": "int",
+          "column": "id"
+        }
+      ],
+      "searchables": [
+        "name"
+      ]
+    }
+  ]
+}
