@@ -9,7 +9,7 @@ export default class Collection {
 
     firstWhere(property, operator = undefined, value = undefined) {
         return this.first(item => {
-            // Assuming that property is value in this case
+            // Assuming that property is value in this case.
             if (operator === undefined && value === undefined) {
                 if (typeof item === 'object' && item.hasOwnProperty(property)) {
                     return item[property] === property
