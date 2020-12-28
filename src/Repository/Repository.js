@@ -1,12 +1,12 @@
 export default class Repository
 {
-    $sort = [];
-    $search = [];
-    $match = [];
-    $related = [];
-
     constructor(uriKey) {
         this.uriKey = uriKey;
+
+        this.$sort = [];
+        this.$search = [];
+        this.$match = [];
+        this.$related = [];
     }
 
     setName(name) {

@@ -1,6 +1,17 @@
 {
   "name": "@binarcode/restifyjs",
+  "description": "Support for binaryk/laravel-restify.",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BinarCode/restifyjs"
+  },
+  "keywords": ["api", "laravel", "restify", "rest"],
+  "author": {
+    "name": "Eduard Lupacescu",
+    "email": "eduard.lupacescu@binarcode.com"
+  },
+  "license": "MIT",
   "devDependencies": {
     "esm": "^3.2.25",
     "mocha": "^8.2.1"
