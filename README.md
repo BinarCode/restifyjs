@@ -12,7 +12,7 @@
 You can install the package via npm / yarn:
 
 ```bash
-npm install binarcode/restifyjs
+npm install @binarcode/restifyjs
 ```
 
 ## Quick start
