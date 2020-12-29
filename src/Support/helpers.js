@@ -1,5 +1,5 @@
 import Collection from './Collection';
-import Singleton from '../Restify';
+import {Singleton} from '../Restify';
 
 export function collect(items) {
     return Collection.make(items);

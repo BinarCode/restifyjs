@@ -1,4 +1,4 @@
-import Singleton, {Restify} from './src/Restify';
+import Restify, {Singleton} from './src/Restify';
 import {collect, createRestify} from './src/Support/helpers';
 import Collection from './src/Support/Collection';
 

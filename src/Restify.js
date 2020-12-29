@@ -1,7 +1,7 @@
 import Repository from './Repository/Repository';
 import Collection from './Support/Collection';
 
-export class Restify {
+class Restify {
     constructor(config = {}, repositories = []) {
         this.setConfig(config);
         this.setRepositories(repositories);
@@ -47,6 +47,6 @@ export class Restify {
     }
 }
 
-const Singleton = new Restify();
+export const Singleton = new Restify();
 
-export default Singleton;
+export default Restify;

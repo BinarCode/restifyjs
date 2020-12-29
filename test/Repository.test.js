@@ -2,11 +2,10 @@ import assert from 'assert';
 import Restify from '../src/Restify';
 import Repository from '../src/Repository/Repository';
 
-
 describe('Repository', () => {
     describe('#matches()', () => {
         it('can return matches', () => {
-            const restify = Restify.init({
+            const restify = Restify.make({
                 repositories: [{
                     uriKey: 'users',
                     match: [{
@@ -23,7 +22,7 @@ describe('Repository', () => {
     })
     describe('#sorts()', () => {
         it('can return sorts', () => {
-            const restify = Restify.init({
+            const restify = Restify.make({
                 repositories: [{
                     uriKey: 'users',
                     sort: ['id'],
@@ -36,7 +35,7 @@ describe('Repository', () => {
     })
     describe('#searchables()', () => {
         it('can return searchables', () => {
-            const restify = Restify.init({
+            const restify = Restify.make({
                 repositories: [{
                     uriKey: 'users',
                     searchables: ['age'],
