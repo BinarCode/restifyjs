@@ -1,7 +1,7 @@
 {
   "name": "@binarcode/restifyjs",
   "description": "Support for binaryk/laravel-restify.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/BinarCode/restifyjs"
