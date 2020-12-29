@@ -1,3 +1,5 @@
+import axios from '../Support/axios';
+
 export default class Repository {
     constructor(definition) {
         this.$sort = [];
@@ -40,6 +42,20 @@ export default class Repository {
         this.config = config;
 
         return this;
+    }
+
+    setAxios(axios) {
+        this.axios = axios;
+
+        return this;
+    }
+
+    request(options = null) {
+        if (options !== null) {
+            return this.axios(options)
+        }
+
+        return this.axios
     }
 
     sorts() {
@@ -87,11 +103,18 @@ export default class Repository {
     }
 
     uri(suffix = null) {
+        console.log(this.config.uri());
+
         return this.config.uri(
             suffix ? `${this.uriKey}/${suffix}` : this.uriKey
         );
     }
 
     get() {
+        console.log(this.uri());
+
+        return this.request().get(
+            this.uri()
+        )
     }
 }

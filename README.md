@@ -122,20 +122,20 @@ Restify.resetPassword({
 const usersRepository = Restify.repsitory('users');
 
 // List:
-usersRepository.get();
+await usersRepository.get();
 
 // Create:
-usersRepository.store({
+await usersRepository.store({
     first_name, last_name, email
 });
 
 // Update:
-usersRepository.put({
+await usersRepository.put({
     first_name
 });
 
 // Delete:
-usersRepository.delete({
+await usersRepository.delete({
     id
 });
 

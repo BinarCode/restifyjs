@@ -11,4 +11,10 @@ export default class RepositoriesCollection extends Collection {
 
         return this;
     }
+
+    setAxios(axios) {
+        this.map(item => item.setAxios(axios));
+
+        return this;
+    }
 }

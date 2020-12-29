@@ -37,6 +37,7 @@ class Restify {
             repositories
         )
             .mapIntoRepositories()
+            .setAxios(this.request())
             .setConfig(this.config);
 
         return this;
