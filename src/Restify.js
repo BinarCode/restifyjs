@@ -1,4 +1,6 @@
+import Bus from './Support/Bus';
 import Config from './Dto/Config';
+import axios from './Support/axios';
 import RepositoriesCollection from './Support/RepositoriesCollection';
 
 class Restify {
@@ -6,6 +8,8 @@ class Restify {
         if (api) {
             this.init(api)
         }
+
+        this.bus = new Bus;
     }
 
     static make(apiData) {
@@ -13,7 +17,8 @@ class Restify {
     }
 
     init(apiData) {
-        return this.setConfig(apiData.config)
+        return this
+            .setConfig(apiData.config)
             .setRepositories(apiData.repositories);
     }
 
@@ -30,7 +35,10 @@ class Restify {
 
         this.repositories = RepositoriesCollection.make(
             repositories
-        ).mapIntoRepositories();
+        )
+            .mapIntoRepositories()
+            .setAxios(this.request())
+            .setConfig(this.config);
 
         return this;
     }
@@ -51,6 +59,26 @@ class Restify {
 
     uri(suffix = null) {
         return this.config.uri(suffix);
+    }
+
+    $emit(name, data) {
+        this.bus.$emit(name, data);
+
+        return this;
+    }
+
+    $on(name, listener) {
+        this.bus.$on(name, listener);
+
+        return this;
+    }
+
+    request(options) {
+        if (options !== undefined) {
+            return axios(options)
+        }
+
+        return axios
     }
 }
 

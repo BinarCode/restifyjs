@@ -23,7 +23,7 @@ Setup package:
 //  main.js
 import { createRestify } from '@binarcode/restifyjs';
 
-createRestify('https://host.test/api/restify/restifyjs/setup')
+await createRestify('https://host.test/api/restify/restifyjs/setup')
 ```
 
 In the configuration above, the `https://host.test/api/restify/restifyjs/setup` is the fully qualified url to your Laravel Restify based API.
@@ -52,6 +52,21 @@ If you want to have `Restify` available gloabally, you can mount it on window ob
 
 ```js
 createRestify(config).mount(window);
+```
+
+## Using in vue
+
+This is the setup you can use in your vue application: 
+
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
+import { createRestify } from '@binarcode/restifyjs';
+
+createRestify('http://restify-app.test/api/restify/restifyjs/setup').then(Restify => {
+    Restify.mount(window);
+    createApp(App).mount('#app');
+})
 ```
 
 ## Get repository
@@ -107,20 +122,20 @@ Restify.resetPassword({
 const usersRepository = Restify.repsitory('users');
 
 // List:
-usersRepository.get();
+await usersRepository.get();
 
 // Create:
-usersRepository.store({
+await usersRepository.store({
     first_name, last_name, email
 });
 
 // Update:
-usersRepository.put({
+await usersRepository.put({
     first_name
 });
 
 // Delete:
-usersRepository.delete({
+await usersRepository.delete({
     id
 });
 
@@ -133,4 +148,14 @@ axios.post(`actions?action=verify`, {
 });
 
 Under the hood it will call: `api/restify/users/actions?action=verify`
+```
+
+## Events
+
+RestifyJS provides an event bus, so you can listen for some events.
+
+The `error` event happens when any request fails with `500` status code:
+
+```js
+Restify.$on('error', message => console.warn(message));
 ```

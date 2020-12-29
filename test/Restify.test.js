@@ -3,7 +3,6 @@ import api from './data/api.json';
 import Restify from '../src/Restify';
 import Repository from '../src/Repository/Repository';
 import Config from '../src/Dto/Config';
-import { Collection } from '../index';
 import RepositoriesCollection from '../src/Support/RepositoriesCollection';
 
 describe('Restify', () => {
@@ -45,6 +44,17 @@ describe('Restify', () => {
 
             assert.ok(restify.repository('users') instanceof Repository);
             assert.equal(restify.repository('users').name, 'Wew');
+        })
+    })
+    describe('#emit()', () => {
+        it('can emit event', () => {
+            const restify = Restify.make(api);
+
+            restify.$on('foo', (data) => {
+                assert.equal(data, 'bar')
+            })
+
+            restify.$emit('foo', 'bar')
         })
     })
 })

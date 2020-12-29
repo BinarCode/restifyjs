@@ -1,5 +1,6 @@
-export default class Repository
-{
+import axios from '../Support/axios';
+
+export default class Repository {
     constructor(definition) {
         this.$sort = [];
         this.$search = [];
@@ -11,7 +12,7 @@ export default class Repository
         }
 
         if (typeof definition === 'object') {
-            if (! definition.hasOwnProperty('uriKey')) {
+            if (!definition.hasOwnProperty('uriKey')) {
                 throw new Error('Invalid repository definition.')
             }
 
@@ -19,9 +20,9 @@ export default class Repository
                 .setUriKey(definition.uriKey)
                 .setName(definition.name)
                 .setSorts(definition.sort)
-                .setSearcheables(definition.searchables)
                 .setMatches(definition.match)
                 .setRelated(definition.related)
+                .setSearcheables(definition.searchables)
         }
     }
 
@@ -35,6 +36,26 @@ export default class Repository
         this.name = name;
 
         return this;
+    }
+
+    setConfig(config) {
+        this.config = config;
+
+        return this;
+    }
+
+    setAxios(axios) {
+        this.axios = axios;
+
+        return this;
+    }
+
+    request(options = null) {
+        if (options !== null) {
+            return this.axios(options)
+        }
+
+        return this.axios
     }
 
     sorts() {
@@ -79,5 +100,27 @@ export default class Repository
 
     static make(item) {
         return new this(item);
+    }
+
+    uri(suffix = null) {
+        return this.config.uri(
+            suffix ? `${this.uriKey}/${suffix}` : this.uriKey
+        );
+    }
+
+    get() {
+        return this.request().get(this.uri());
+    }
+
+    store(data) {
+        return this.request().post(this.uri(), data);
+    }
+
+    update(key, data) {
+        return this.request().post(this.uri(key), data);
+    }
+
+    delete(key) {
+        return this.request().delete(this.uri(key));
     }
 }
