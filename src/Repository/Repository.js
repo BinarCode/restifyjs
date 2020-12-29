@@ -1,12 +1,34 @@
 export default class Repository
 {
-    constructor(uriKey) {
-        this.uriKey = uriKey;
-
+    constructor(definition) {
         this.$sort = [];
         this.$search = [];
         this.$match = [];
         this.$related = [];
+
+        if (typeof definition === 'string') {
+            return this.uriKey = definition;
+        }
+
+        if (typeof definition === 'object') {
+            if (! definition.hasOwnProperty('uriKey')) {
+                throw new Error('Invalid repository definition.')
+            }
+
+            return this
+                .setUriKey(definition.uriKey)
+                .setName(definition.name)
+                .setSorts(definition.sort)
+                .setSearcheables(definition.searchables)
+                .setMatches(definition.match)
+                .setRelated(definition.related)
+        }
+    }
+
+    setUriKey(uriKey) {
+        this.uriKey = uriKey;
+
+        return this;
     }
 
     setName(name) {
@@ -56,23 +78,6 @@ export default class Repository
     }
 
     static make(item) {
-        if (typeof item === 'string') {
-            return new this(item);
-        }
-
-        if (typeof item === 'object') {
-            if (! item.hasOwnProperty('uriKey')) {
-                throw new Error('Invalid repository item.')
-            }
-
-            return (new this(item.uriKey))
-                .setName(item.name)
-                .setSorts(item.sort)
-                .setSearcheables(item.searchables)
-                .setMatches(item.match)
-                .setRelated(item.related)
-        }
-
         return new this(item);
     }
 }

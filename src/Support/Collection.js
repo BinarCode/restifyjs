@@ -86,4 +86,18 @@ export default class Collection {
 
         return [items];
     }
+
+    count() {
+        return this.items.length || 0;
+    }
+
+    map(callable) {
+        return this.items.map(item => callable(item));
+    }
+
+    mapInto($class) {
+        return new this.constructor(
+            this.map(item => new $class(item))
+        );
+    }
 }

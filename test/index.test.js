@@ -10,11 +10,11 @@ describe('Index', () => {
                 }]
             });
 
-            assert.equal(restify.repositories.length, 1)
+            assert.equal(restify.repositories.count(), 1)
 
             const Restify = require('../index').default;
 
-            assert.equal(Restify.repositories.length, 1)
+            assert.equal(Restify.repositories.count(), 1)
         })
     })
 })
