@@ -46,5 +46,16 @@ describe('Restify', () => {
             assert.equal(restify.repository('users').name, 'Wew');
         })
     })
+    describe('#emit()', () => {
+        it('can emit event', () => {
+            const restify = Restify.make(api);
+
+            restify.$on('foo', (data) => {
+                assert.equal(data, 'bar')
+            })
+
+            restify.$emit('foo', 'bar')
+        })
+    })
 })
 
