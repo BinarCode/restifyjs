@@ -6,11 +6,17 @@
     "type": "git",
     "url": "https://github.com/BinarCode/restifyjs"
   },
-  "keywords": ["api", "laravel", "restify", "rest"],
+  "keywords": [
+    "api",
+    "laravel",
+    "restify",
+    "rest"
+  ],
   "author": {
     "name": "Eduard Lupacescu",
     "email": "eduard.lupacescu@binarcode.com"
   },
+  "main": "index.js",
   "license": "MIT",
   "devDependencies": {
     "esm": "^3.2.25",

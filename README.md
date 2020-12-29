@@ -20,18 +20,37 @@ npm install @binarcode/restifyjs
 Setup package:
 
 ```js
+//  main.js
+import { createRestify } from '@binarcode/restifyjs';
+
+createRestify('https://host.test/api/restify/restifyjs/setup')
+```
+
+In the configuration above, the `https://host.test/api/restify/restifyjs/setup` is the fully qualified url to your Laravel Restify based API.
+
+Under the hood package will fetch the configurations from the server, so you don't have to worry about that. Next, you can import the `Restify` in any of yours project files. 
+
+Here is what the package does when `createRestify` is called:
+
+```js
 import Restify from '@binarcode/restifyjs'
 //...
-const api = await axios.get('api/restify/restifyjs/setup');
+const config = await fetch('https://host.test/api/restify/restifyjs/setup');
 
-const restify = Restify.init(api);
+return Restify.init(config);
+```
 
-// Get specific repository:
+## Get repository
 
-const userRepository = restify.repository('users');
+In Restify, every single resource you may have (`users`, `articles` etc.), are called `Repositories`.
 
-// List sorts:
-userRepository.sorts()
+Let's get the user repository, and perform some actions:
+
+```js
+// Any .vue or .js file
+import Restify  from '@binarcode/restifyjs';
+
+const userRepository = Restify.repository('users');
 
 // List matches:
 userRepository.matches()
@@ -41,4 +60,63 @@ userRepository.related()
 
 // List searchables:
 userRepository.searchables()
+```
+
+## Auth:
+
+```js
+// Login:
+Restify.login({
+    email, password
+});
+
+
+// Register:
+Restify.register({
+    name, email, password, password_confirmation
+});
+
+// Forgot Password:
+Restify.forgotPassword({
+    email
+});
+
+// Reset Password:
+Restify.resetPassword({
+    email, token, password
+})
+```
+
+## Repository calls:
+
+```js
+const usersRepository = Restify.repsitory('users');
+
+// List:
+usersRepository.get();
+
+// Create:
+usersRepository.store({
+    first_name, last_name, email
+});
+
+// Update:
+usersRepository.put({
+    first_name
+});
+
+// Delete:
+usersRepository.delete({
+    id
+});
+
+// Custom:
+const axios = usersRepository.request();
+
+// This is a configured axios instance for the usersRepository:
+axios.post(`actions?action=verify`, {
+    repositories: 'all'
+});
+
+Under the hood it will call: `api/restify/users/actions?action=verify`
 ```

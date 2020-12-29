@@ -1,3 +1,12 @@
-import Restify from './src/Restify';
+import Singleton, {Restify} from './src/Restify';
+import {collect, createRestify} from './src/Support/helpers';
+import Collection from './src/Support/Collection';
 
-export default Restify;
+export {
+    collect,
+    createRestify,
+    Restify,
+    Collection,
+}
+
+export default Singleton;
