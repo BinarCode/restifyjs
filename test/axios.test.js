@@ -3,10 +3,7 @@ import Restify from '../src/Restify';
 import axios from 'axios'
 import moxios from 'moxios'
 import instance from '../src/Support/axios';
-import assert, { equal } from 'assert';
-import Repository from '../src/Repository/Repository';
-import Config from '../src/Dto/Config';
-import RepositoriesCollection from '../src/Support/RepositoriesCollection';
+import assert from 'assert';
 
 describe('axios', () => {
     describe('via Restify', () => {
