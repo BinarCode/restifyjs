@@ -1,4 +1,8 @@
 export default class Config {
+    constructor(config) {
+        this.setConfig(config);
+    }
+
     setConfig(config) {
         this.config = config;
 
@@ -6,6 +10,7 @@ export default class Config {
     }
 
     uri(suffix = null) {
+
         const base = `${this.config.domain}/${this.config.base}`;
 
         if (suffix)  {

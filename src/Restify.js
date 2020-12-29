@@ -2,13 +2,14 @@ import Config from './Dto/Config';
 import RepositoriesCollection from './Support/RepositoriesCollection';
 
 class Restify {
-    constructor(config = {}, repositories = []) {
-        this.setConfig(config);
-        this.setRepositories(repositories);
+    constructor(api) {
+        if (api) {
+            this.init(api)
+        }
     }
 
     static make(apiData) {
-        return (new this).init(apiData);
+        return new this(apiData);
     }
 
     init(apiData) {
@@ -46,6 +47,10 @@ class Restify {
 
     mount(scope) {
         scope.Restify = this;
+    }
+
+    uri(suffix = null) {
+        return this.config.uri(suffix);
     }
 }
 
