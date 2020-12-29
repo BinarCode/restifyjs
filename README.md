@@ -149,3 +149,13 @@ axios.post(`actions?action=verify`, {
 
 Under the hood it will call: `api/restify/users/actions?action=verify`
 ```
+
+## Events
+
+RestifyJS provides an event bus, so you can listen for some events.
+
+The `error` event happens when any request fails with `500` status code:
+
+```js
+Restify.$on('error', message => console.warn(message));
+```

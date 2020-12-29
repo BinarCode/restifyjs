@@ -103,18 +103,24 @@ export default class Repository {
     }
 
     uri(suffix = null) {
-        console.log(this.config.uri());
-
         return this.config.uri(
             suffix ? `${this.uriKey}/${suffix}` : this.uriKey
         );
     }
 
     get() {
-        console.log(this.uri());
+        return this.request().get(this.uri());
+    }
 
-        return this.request().get(
-            this.uri()
-        )
+    store(data) {
+        return this.request().post(this.uri(), data);
+    }
+
+    update(key, data) {
+        return this.request().post(this.uri(key), data);
+    }
+
+    delete(key) {
+        return this.request().delete(this.uri(key));
     }
 }
