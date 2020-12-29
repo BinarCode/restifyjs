@@ -40,9 +40,23 @@ const config = await fetch('https://host.test/api/restify/restifyjs/setup');
 return Restify.init(config);
 ```
 
+The `createRestify` accept an object as well instead of the URL, so you can fetch the configuration using your custom `axios` instance, and give the configuration object: 
+
+```js
+const config = await axios.get('...');
+
+createRestify(config);
+```
+
+If you want to have `Restify` available gloabally, you can mount it on window object using `mount`: 
+
+```js
+createRestify(config).mount(window);
+```
+
 ## Get repository
 
-In Restify, every single resource you may have (`users`, `articles` etc.), are called `Repositories`.
+In Restify, every single resource you may have (`users`, `articles` etc.), is called `Repository`.
 
 Let's get the user repository, and perform some actions:
 
