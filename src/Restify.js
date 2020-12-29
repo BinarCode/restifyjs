@@ -17,7 +17,8 @@ class Restify {
     }
 
     init(apiData) {
-        return this.setConfig(apiData.config)
+        return this
+            .setConfig(apiData.config)
             .setRepositories(apiData.repositories);
     }
 

@@ -23,7 +23,7 @@ Setup package:
 //  main.js
 import { createRestify } from '@binarcode/restifyjs';
 
-createRestify('https://host.test/api/restify/restifyjs/setup')
+await createRestify('https://host.test/api/restify/restifyjs/setup')
 ```
 
 In the configuration above, the `https://host.test/api/restify/restifyjs/setup` is the fully qualified url to your Laravel Restify based API.
@@ -52,6 +52,21 @@ If you want to have `Restify` available gloabally, you can mount it on window ob
 
 ```js
 createRestify(config).mount(window);
+```
+
+## Using in vue
+
+This is the setup you can use in your vue application: 
+
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
+import { createRestify } from '@binarcode/restifyjs';
+
+createRestify('http://restify-app.test/api/restify/restifyjs/setup').then(Restify => {
+    Restify.mount(window);
+    createApp(App).mount('#app');
+})
 ```
 
 ## Get repository
