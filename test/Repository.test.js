@@ -1,6 +1,8 @@
 import assert from 'assert';
+import api from './data/api.json';
 import Restify from '../src/Restify';
 import Repository from '../src/Repository/Repository';
+import { createRestify } from '../index';
 
 describe('Repository', () => {
     describe('#matches()', () => {
@@ -61,6 +63,14 @@ describe('Repository', () => {
             });
 
             assert.ok(Array.isArray(repository.related()))
+        })
+    })
+    describe('#get()', () => {
+        it('can perform get request', () => {
+            const restify = createRestify(api);
+            const users = restify.repository('users');
+
+            assert.equal('https://api.binarcode.com/api/restify/users', users.uri());
         })
     })
 })

@@ -1,5 +1,4 @@
-export default class Repository
-{
+export default class Repository {
     constructor(definition) {
         this.$sort = [];
         this.$search = [];
@@ -11,7 +10,7 @@ export default class Repository
         }
 
         if (typeof definition === 'object') {
-            if (! definition.hasOwnProperty('uriKey')) {
+            if (!definition.hasOwnProperty('uriKey')) {
                 throw new Error('Invalid repository definition.')
             }
 
@@ -19,9 +18,9 @@ export default class Repository
                 .setUriKey(definition.uriKey)
                 .setName(definition.name)
                 .setSorts(definition.sort)
-                .setSearcheables(definition.searchables)
                 .setMatches(definition.match)
                 .setRelated(definition.related)
+                .setSearcheables(definition.searchables)
         }
     }
 
@@ -33,6 +32,12 @@ export default class Repository
 
     setName(name) {
         this.name = name;
+
+        return this;
+    }
+
+    setConfig(config) {
+        this.config = config;
 
         return this;
     }
@@ -79,5 +84,14 @@ export default class Repository
 
     static make(item) {
         return new this(item);
+    }
+
+    uri(suffix = null) {
+        return this.config.uri(
+            suffix ? `${this.uriKey}/${suffix}` : this.uriKey
+        );
+    }
+
+    get() {
     }
 }

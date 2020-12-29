@@ -3,7 +3,6 @@ import api from './data/api.json';
 import Restify from '../src/Restify';
 import Repository from '../src/Repository/Repository';
 import Config from '../src/Dto/Config';
-import { Collection } from '../index';
 import RepositoriesCollection from '../src/Support/RepositoriesCollection';
 
 describe('Restify', () => {

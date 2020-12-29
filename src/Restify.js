@@ -30,7 +30,9 @@ class Restify {
 
         this.repositories = RepositoriesCollection.make(
             repositories
-        ).mapIntoRepositories();
+        )
+            .mapIntoRepositories()
+            .setConfig(this.config);
 
         return this;
     }
