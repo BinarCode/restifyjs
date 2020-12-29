@@ -1,5 +1,5 @@
-import Repository from './Repository/Repository';
-import Collection from './Support/Collection';
+import Config from './Dto/Config';
+import RepositoriesCollection from './Support/RepositoriesCollection';
 
 class Restify {
     constructor(config = {}, repositories = []) {
@@ -17,7 +17,7 @@ class Restify {
     }
 
     setConfig(config) {
-        this.config = config;
+        this.config = Config.make(config);
 
         return this;
     }
@@ -27,13 +27,15 @@ class Restify {
             throw new Error('Repositories should be an array.');
         }
 
-        this.repositories = repositories.map(repository => Repository.make(repository));
+        this.repositories = RepositoriesCollection.make(
+            repositories
+        ).mapIntoRepositories();
 
         return this;
     }
 
     repository(key) {
-        const repository = Collection.make(this.repositories).first(item => item.uriKey === key);
+        const repository = this.repositories.first(item => item.uriKey === key);
 
         if (!repository) {
             throw new Error(`404 Not found repository "${key}"`)

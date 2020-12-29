@@ -1,5 +1,6 @@
 {
   "config": {
+    "domain": "https://api.binarcode.com",
     "base": "api/restify"
   },
   "repositories": [
