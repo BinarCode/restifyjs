@@ -2,6 +2,7 @@ import Bus from './Support/Bus';
 import Config from './Dto/Config';
 import axios from './Support/axios';
 import RepositoriesCollection from './Support/RepositoriesCollection';
+import Auth from './Services/Auth';
 
 class Restify {
     constructor(api) {
@@ -19,7 +20,8 @@ class Restify {
     init(apiData) {
         return this
             .setConfig(apiData.config)
-            .setRepositories(apiData.repositories);
+            .setRepositories(apiData.repositories)
+            .mount(window);
     }
 
     setConfig(config) {
@@ -37,7 +39,7 @@ class Restify {
             repositories
         )
             .mapIntoRepositories()
-            .setAxios(this.request())
+            .setRequest(this.request)
             .setConfig(this.config);
 
         return this;
@@ -55,6 +57,8 @@ class Restify {
 
     mount(scope) {
         scope.Restify = this;
+
+        return this;
     }
 
     uri(suffix = null) {
@@ -73,14 +77,34 @@ class Restify {
         return this;
     }
 
+    useAxiosInstance(axios) {
+        this.axios = axios;
+
+        return this;
+    }
+
     request(options) {
+        if (this.axios) {
+            return options ? this.axios(options) : this.axios;
+        }
+
         if (options !== undefined) {
             return axios(options)
         }
 
         return axios
     }
+
+    getRepositories() {
+        return this.repositories;
+    }
+
+    repositoriesKeys() {
+        return this.getRepositories().map(item => item.uriKey);
+    }
 }
+
+Object.assign(Restify.prototype, Auth);
 
 export const Singleton = new Restify();
 

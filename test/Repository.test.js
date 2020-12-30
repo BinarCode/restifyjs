@@ -3,8 +3,14 @@ import api from './data/api.json';
 import Restify from '../src/Restify';
 import Repository from '../src/Repository/Repository';
 import { createRestify } from '../index';
+import moxios from 'moxios';
+import instance from '../src/Support/axios';
 
 describe('Repository', () => {
+    beforeEach(() => {
+        global.Restify = Restify.make(api);
+    })
+
     describe('#matches()', () => {
         it('can return matches', () => {
             const restify = Restify.make({
@@ -65,12 +71,35 @@ describe('Repository', () => {
             assert.ok(Array.isArray(repository.related()))
         })
     })
-    describe('#get()', () => {
-        it('can perform get request', () => {
-            const restify = createRestify(api);
-            const users = restify.repository('users');
+    describe('Calls', () => {
+        beforeEach(function () {
+            moxios.install(instance);
+        })
 
-            assert.equal('https://api.binarcode.com/api/restify/users', users.uri());
+        afterEach(function () {
+            moxios.uninstall(instance)
+        })
+
+        describe('#get()', () => {
+            it('can perform get request', async () => {
+                const restify = createRestify(api);
+                const users = restify.repository('users');
+
+                assert.equal('https://api.binarcode.com/api/restify/users', users.uri());
+
+                moxios.stubRequest('https://api.binarcode.com/api/restify/users', {
+                    status: 200,
+                    response: {
+                        data: [{
+                            name: 'John'
+                        }]
+                    }
+                })
+
+                const response = await users.get();
+
+                assert.equal(response.data.data.length, 1)
+            })
         })
     })
 })

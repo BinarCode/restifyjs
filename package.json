@@ -1,7 +1,7 @@
 {
   "name": "@binarcode/restifyjs",
   "description": "Support for binaryk/laravel-restify.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/BinarCode/restifyjs"
@@ -20,12 +20,14 @@
   "license": "MIT",
   "devDependencies": {
     "esm": "^3.2.25",
+    "jsdom": "16.4.0",
+    "jsdom-global": "3.0.2",
     "mocha": "^8.2.1",
     "moxios": "^0.4.0"
   },
   "scripts": {
-    "test": "mocha -r esm --exit",
-    "test:watch": "mocha -r esm --watch"
+    "test": "mocha -r esm,jsdom-global/register --exit",
+    "test:watch": "mocha -r esm,jsdom-global/register --watch"
   },
   "dependencies": {
     "axios": "^0.21.1"

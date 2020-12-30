@@ -10,9 +10,9 @@ export function createRestify(config) {
     if (typeof config === 'string') {
         return axios.get(config)
             .then(response => {
-                return Singleton.init(response.data)
+                return Singleton.init(response.data).mount(window)
             })
     }
 
-    return Singleton.init(config);
+    return Singleton.init(config).mount(window)
 }

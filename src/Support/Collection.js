@@ -100,4 +100,8 @@ export default class Collection {
             this.map(item => new $class(item))
         );
     }
+
+    all() {
+        return this.items;
+    }
 }
