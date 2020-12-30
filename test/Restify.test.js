@@ -42,6 +42,7 @@ describe('Restify', () => {
                 }]
             });
 
+            assert.ok(restify.repositoriesKeys()[0] === 'users');
             assert.ok(restify.repository('users') instanceof Repository);
             assert.equal(restify.repository('users').name, 'Wew');
         })
@@ -55,6 +56,19 @@ describe('Restify', () => {
             })
 
             restify.$emit('foo', 'bar')
+        })
+    })
+    describe('#request()', () => {
+        it('can use custom axios instance', () => {
+            const restify = Restify.make(api);
+
+            restify.useAxiosInstance({
+                customAxios: 'customAxios'
+            })
+
+            const axios = restify.request();
+
+            assert.equal(axios.customAxios, 'customAxios')
         })
     })
 })

@@ -6,7 +6,6 @@
     <a href="https://packagist.org/packages/binaryk/laravel-restify"><img src="https://poser.pugx.org/binaryk/laravel-restify/license.svg" alt="License"></a>
 </p>
 
-
 ## Installation
 
 You can install the package via npm / yarn:
@@ -26,9 +25,11 @@ import { createRestify } from '@binarcode/restifyjs';
 await createRestify('https://host.test/api/restify/restifyjs/setup')
 ```
 
-In the configuration above, the `https://host.test/api/restify/restifyjs/setup` is the fully qualified url to your Laravel Restify based API.
+In the configuration above, the `https://host.test/api/restify/restifyjs/setup` is the fully qualified url to your
+Laravel Restify based API.
 
-Under the hood package will fetch the configurations from the server, so you don't have to worry about that. Next, you can import the `Restify` in any of yours project files. 
+Under the hood package will fetch the configurations from the server, so you don't have to worry about that. Next, you
+can import the `Restify` in any of yours project files.
 
 Here is what the package does when `createRestify` is called:
 
@@ -40,7 +41,8 @@ const config = await fetch('https://host.test/api/restify/restifyjs/setup');
 return Restify.init(config);
 ```
 
-The `createRestify` accept an object as well instead of the URL, so you can fetch the configuration using your custom `axios` instance, and give the configuration object: 
+The `createRestify` accept an object as well instead of the URL, so you can fetch the configuration using your
+custom `axios` instance, and give the configuration object:
 
 ```js
 const config = await axios.get('...');
@@ -48,24 +50,55 @@ const config = await axios.get('...');
 createRestify(config);
 ```
 
-If you want to have `Restify` available gloabally, you can mount it on window object using `mount`: 
+After creating you call `createRestify`, the `Restify` singleton is available gloabally, however you can mount on your
+own on window object using `mount`:
 
 ```js
 createRestify(config).mount(window);
 ```
 
+## Axios instance
+
+RestifyJS has its own `axios` instance to made requests. However, you can use your own `axios` instance by using:
+
+```js
+Restify.useAxiosInstance(axiosInstance);
+```
+
 ## Using in vue
 
-This is the setup you can use in your vue application: 
+This is the setup you can use in your `vue 3` application:
 
 ```js
 import { createApp } from 'vue'
 import App from './App.vue'
+import axios from './utils/axios';
 import { createRestify } from '@binarcode/restifyjs';
 
 createRestify('http://restify-app.test/api/restify/restifyjs/setup').then(Restify => {
-    Restify.mount(window);
+    Restify.useAxiosInstance(axios);
+
     createApp(App).mount('#app');
+})
+```
+
+And this basic setup for the `vue 2`:
+
+```js
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import axios from '@/modules/common/apiConfig'
+import { createRestify } from '@binarcode/restifyjs';
+
+
+createRestify('http://restify-app.test/api/restify/restifyjs/setup').then(Restify => {
+    Restify.useAxiosInstance(axios);
+
+    window.app = new Vue({
+        router,
+        render: h => h(App)
+    }).$mount('#app')
 })
 ```
 
@@ -73,11 +106,23 @@ createRestify('http://restify-app.test/api/restify/restifyjs/setup').then(Restif
 
 In Restify, every single resource you may have (`users`, `articles` etc.), is called `Repository`.
 
+You can list all available repositories keys using:
+
+```js
+Restify.repositoriesKeys();
+```
+
+You also have access to the repository collection using:
+
+```js
+Restify.getRepositories()
+```
+
 Let's get the user repository, and perform some actions:
 
 ```js
 // Any .vue or .js file
-import Restify  from '@binarcode/restifyjs';
+import Restify from '@binarcode/restifyjs';
 
 const userRepository = Restify.repository('users');
 
@@ -114,15 +159,24 @@ Restify.forgotPassword({
 Restify.resetPassword({
     email, token, password
 })
+
+// (Optional) Verify user email:
+// `userId` and `emailHash` will be send via email when `register` users if verification enabled.
+Restify.verify(userId, emailHash)
 ```
+
+Requests above returns a promise you can await.
 
 ## Repository calls:
 
 ```js
-const usersRepository = Restify.repsitory('users');
+const usersRepository = Restify.repository('users');
 
-// List:
-await usersRepository.get();
+// List with related posts:
+await usersRepository.get({related: 'posts'});
+
+// Show with related post:
+await usersRepository.show(id, {related: 'posts'});
 
 // Create:
 await usersRepository.store({
@@ -130,24 +184,38 @@ await usersRepository.store({
 });
 
 // Update:
-await usersRepository.put({
+await usersRepository.update(id, {
     first_name
 });
 
 // Delete:
-await usersRepository.delete({
-    id
+await usersRepository.delete(id);
+```
+
+Sure enough you can perform these actions in a custom way. You can get the base repository url using: 
+
+```js
+usersRepository.uri('actions')
+```
+
+This will return you back the FQDN: 
+
+`http://restify-app.test/api/restify/users/actions`
+
+### Actions
+
+Actions are the main feature to modify your resources. Let's assume you have a `Post`, and you have to publish it using the `itemAction`: 
+
+```js
+Restify.repository('posts').itemAction(id, 'publish');
+```
+
+Publish multiple posts `posts` using `action` instead of `itemAction`, but in this case you have to pass the list of ids you want this action to be performed:
+
+```js
+Restify.repository('posts').action('publish', {
+    repositories: [1, 2, 3]
 });
-
-// Custom:
-const axios = usersRepository.request();
-
-// This is a configured axios instance for the usersRepository:
-axios.post(`actions?action=verify`, {
-    repositories: 'all'
-});
-
-Under the hood it will call: `api/restify/users/actions?action=verify`
 ```
 
 ## Events

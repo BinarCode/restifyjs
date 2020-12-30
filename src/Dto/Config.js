@@ -10,10 +10,19 @@ export default class Config {
     }
 
     uri(suffix = null) {
-
         const base = `${this.config.domain}/${this.config.base}`;
 
         if (suffix)  {
+            return `${base}/${suffix}`;
+        }
+
+        return base;
+    }
+
+    baseUri(suffix = null) {
+        const base = `${this.config.domain}`;
+
+        if (suffix) {
             return `${base}/${suffix}`;
         }
 

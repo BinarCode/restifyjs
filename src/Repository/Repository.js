@@ -1,4 +1,4 @@
-import axios from '../Support/axios';
+import {collect} from '../Support/helpers';
 
 export default class Repository {
     constructor(definition) {
@@ -6,6 +6,7 @@ export default class Repository {
         this.$search = [];
         this.$match = [];
         this.$related = [];
+        this.$actions = [];
 
         if (typeof definition === 'string') {
             return this.uriKey = definition;
@@ -23,6 +24,7 @@ export default class Repository {
                 .setMatches(definition.match)
                 .setRelated(definition.related)
                 .setSearcheables(definition.searchables)
+                .setActions(definition.actions)
         }
     }
 
@@ -44,18 +46,10 @@ export default class Repository {
         return this;
     }
 
-    setAxios(axios) {
-        this.axios = axios;
+    setRequest(request) {
+        this.request = request;
 
         return this;
-    }
-
-    request(options = null) {
-        if (options !== null) {
-            return this.axios(options)
-        }
-
-        return this.axios
     }
 
     sorts() {
@@ -92,6 +86,12 @@ export default class Repository {
         return this;
     }
 
+    setActions(actions) {
+        this.$actions = actions;
+
+        return this;
+    }
+
     setRelated(related) {
         this.$related = related;
 
@@ -108,19 +108,53 @@ export default class Repository {
         );
     }
 
-    get() {
-        return this.request().get(this.uri());
+    get(query = {}) {
+        return Restify.request().get(this.uri(), {
+            params: query
+        });
+    }
+
+    show(key, query = {}) {
+        return Restify.request().get(this.uri(key), {
+            params: query
+        });
     }
 
     store(data) {
-        return this.request().post(this.uri(), data);
+        return Restify.request().post(this.uri(), data);
     }
 
     update(key, data) {
-        return this.request().post(this.uri(key), data);
+        return Restify.request().post(this.uri(key), data);
     }
 
     delete(key) {
-        return this.request().delete(this.uri(key));
+        return Restify.request().delete(this.uri(key));
+    }
+
+    itemAction(id, key, data) {
+        return Restify.request().post(
+            this.uri(`${id}/actions?action=${key}`), data
+        )
+    }
+
+    action(key, data) {
+        const action = this.getAction(key);
+
+        if (!action) {
+            throw new Error(`Action ${key} is not defined.`);
+        }
+
+        return Restify.request().post(
+            this.uri(`actions?action=${key}`), data
+        )
+    }
+
+    getAction(key) {
+        if (key) {
+            return collect(this.$actions).firstWhere('uriKey', key);
+        }
+
+        return this.$actions;
     }
 }

@@ -1,18 +1,31 @@
-export default class Auth {
-    constructor(config) {
-        this.config = config;
-    }
+export default {
+    login(data) {
+        return this.request().post(
+            this.config.baseUri('api/login'), data
+        )
+    },
 
-    login() {
-        console.log('login');
-    }
+    register(data) {
+        return this.request().post(
+            this.config.baseUri('api/register'), data
+        )
+    },
 
-    register() {
-        console.log('register');
+    forgotPassword(data) {
+        return this.request().post(
+            this.config.baseUri('api/forgotPassword'), data
+        )
+    },
 
-    }
+    resetPassword(data) {
+        return this.request().post(
+            this.config.baseUri('api/resetPassword'), data
+        )
+    },
 
-    static make(config) {
-        return new this(config);
-    }
+    verify(id, emailHash) {
+        return this.request().post(
+            this.config.baseUri(`api/restify/verify/${id}/${emailHash}`)
+        )
+    },
 }

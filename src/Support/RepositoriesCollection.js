@@ -12,8 +12,8 @@ export default class RepositoriesCollection extends Collection {
         return this;
     }
 
-    setAxios(axios) {
-        this.map(item => item.setAxios(axios));
+    setRequest(request) {
+        this.map(item => item.setRequest(request));
 
         return this;
     }
