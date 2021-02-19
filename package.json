@@ -19,6 +19,8 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "esm": "^3.2.25",
     "jsdom": "16.4.0",
     "jsdom-global": "3.0.2",
@@ -27,7 +29,8 @@
   },
   "scripts": {
     "test": "mocha -r esm,jsdom-global/register --exit",
-    "test:watch": "mocha -r esm,jsdom-global/register --watch"
+    "test:watch": "mocha -r esm,jsdom-global/register --watch",
+    "build": "babel src -d dist"
   },
   "dependencies": {
     "axios": "^0.21.1"
