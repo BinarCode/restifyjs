@@ -21,7 +21,6 @@ class Restify {
         return this
             .setConfig(apiData.config)
             .setRepositories(apiData.repositories)
-            .mount(window);
     }
 
     setConfig(config) {

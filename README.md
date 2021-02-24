@@ -22,11 +22,14 @@ Setup package:
 //  main.js
 import { createRestify } from '@binarcode/restifyjs';
 
-await createRestify('https://host.test/api/restify/restifyjs/setup')
+await createRestify('https://host.test/api/restify/restifyjs/setup?token=testing')
 ```
 
-In the configuration above, the `https://host.test/api/restify/restifyjs/setup` is the fully qualified url to your
-Laravel Restify based API.
+In the configuration above, the `https://host.test/api/restify/restifyjs/setup` is the fully qualified url to your Laravel Restify based API.
+
+:::warn
+In the local and testing environments, the authorization is not required, however, if you want to get the setup configuration in a `production` environment, you have to provide a `token` via query param to authorize it. This token is stored in your Laravel app, in the `restify.restifyjs.token` configuration key.
+:::
 
 Under the hood package will fetch the configurations from the server, so you don't have to worry about that. Next, you
 can import the `Restify` in any of yours project files.
